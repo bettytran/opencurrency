@@ -1,0 +1,6 @@
+name = Open Currency
+description = A currency conversion widget that utilizes the open exchange rates API for calculations using real-time rates.
+core = 7.x
+
+configure = admin/config/content/opencurrency
+

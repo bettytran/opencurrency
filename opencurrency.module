@@ -1,0 +1,95 @@
+<?php
+/**
+ * @file
+ * A block widget for currency conversion using real-time open currency rates.
+ */
+
+ function opencurrency_help($path, $arg) {
+ 	switch ($path) {
+ 		case "admin/help#opencurrency":
+ 			return '<p>' . t("A block widget for currency conversion using real-time open currency rates.");
+ 			break;
+ 	}
+ }
+
+ function opencurrency_block_info() {
+ 	$blocks['opencurrency'] = array(
+ 		'info' => t('Open Currency')
+ 	);
+
+ 	return $blocks;
+ }
+
+
+function opencurrency_menu(){
+	$items = array();
+	$items['admin/config/content/opencurrency'] = array(
+    	'title' => 'Open Currency',
+    	'description' => 'Configuration for Open Currency module',
+    	'page callback' => 'drupal_get_form',
+    	'page arguments' => array('opencurrency_form'),
+    	'access arguments' => array('access administration pages'),
+    	'type' => MENU_NORMAL_ITEM,
+  	);
+  	return $items;
+}
+
+
+function opencurrency_form($form, &$form_state){
+
+	$form['open_exchange_appid'] = array(
+		'#type' => 'textfield',
+		'#title' => t('Open Exchange Rates App ID'),
+		'#description' => t('An App ID can be obtained from openexchangerates.org.'),
+		'#default_value' => variable_get('open_exchange_appid'),
+		'#required' => TRUE
+	);
+
+	return system_settings_form($form);
+}
+
+
+function opencurrency_block_view($delta = ''){
+
+	//set up variables required in js scope
+ 	$settings = array(
+		'appid' => variable_get('open_exchange_appid')
+	);
+
+ 	$block = array();
+
+ 	switch($delta){
+ 		case "opencurrency":
+ 			$block['subject'] = t('Currency Exchange');
+ 			$block['content'] = array(
+ 				'#attached' => array(
+ 					'js' => array(
+ 						'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js',
+ 						drupal_get_path('module', 'opencurrency') . '/js/bootstrap.js',
+ 						drupal_get_path('module', 'opencurrency') . '/js/controllers.js',
+ 						'http://josscrowcroft.github.io/money.js/money.min.js',
+ 						array(
+ 							'data' => array('openCurrency' => $settings),
+ 							'type' => 'setting'
+
+ 						)
+ 					),
+ 					'css' => array(
+ 						drupal_get_path('module', 'opencurrency') . '/opencurrency.css'
+ 					)
+ 				),
+ 				'#theme' => 'opencurrency'
+ 			);
+ 	}
+
+ 	return $block;
+ }
+
+ function opencurrency_theme(){
+ 	return array(
+ 		'opencurrency' => array(
+ 			'template' => 'opencurrency',
+ 			'variables' => array()
+ 		)
+ 	);
+ }

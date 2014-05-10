@@ -1,0 +1,30 @@
+#openCurrencyApp {
+	width: 200px;
+}
+
+#openCurrencyApp .result {
+	 width: 160px;
+	 padding: 5px;
+}
+
+#openCurrencyApp input {
+   border: 1px solid #ccc;
+   border-radius: 3px;
+   padding: 5px;
+   width: 162px;
+}
+
+#openCurrencyApp Select {
+    margin-top: 5px;
+    width: 174px;
+    border: 1px solid #ccc;
+    padding: 5px 8px;
+}
+
+#openCurrencyApp button{
+    margin-top: 5px;
+    width: 174px;
+    border: 1px solid #ccc;
+    padding: 5px 8px;
+    background-color: #fff;
+}
